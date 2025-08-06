@@ -1,3 +1,4 @@
+# Source: https://public.opendatasoft.com/explore/dataset/georef-france-epci/export/?disjunctive.reg_name&disjunctive.dep_name&disjunctive.epci_name&sort=year
 Année;Code Officiel Région;Nom Officiel Région;Code Officiel Département;Nom Officiel Département;Code Officiel EPCI;Code Officiel Courant EPCI;Nom Officiel EPCI;Nom Officiel EPCI Majuscule;Nom Officiel EPCI Minuscule;Code Iso 3166-3 Zone;Type;Fait Partie d'une CTU
 2025;53;Bretagne;22;Côtes-d'Armor;200067981;200067981;Communauté d'agglomération Guingamp-Paimpol Agglomération de l'Armor à l'Argoat;COMMUNAUTÉ D'AGGLOMÉRATION GUINGAMP-PAIMPOL AGGLOMÉRATION DE L'ARMOR À L'ARGOAT;communauté d'agglomération guingamp-paimpol agglomération de l'armor à l'argoat;FXX;CA;Non
 2025;75;Nouvelle-Aquitaine;33;Gironde;243301249;243301249;Communauté de communes Les Rives de la Laurence;COMMUNAUTÉ DE COMMUNES LES RIVES DE LA LAURENCE;communauté de communes les rives de la laurence;FXX;CC;Non
