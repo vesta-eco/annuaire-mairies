@@ -14,7 +14,7 @@ def load_epci_mapping():
         return {}
 
     print(f"Loading EPCI data from {communes_path}...")
-    df = pd.read_csv(communes_path, skiprows=2, low_memory=False)
+    df = pd.read_csv(communes_path, skiprows=1, low_memory=False)
 
     mapping = {}
     for _, row in df.iterrows():
@@ -77,7 +77,7 @@ def extract_local_services(
     epci_mapping = load_epci_mapping()
 
     try:
-        df = pd.read_csv(csv_path, sep=";", dtype=str, na_filter=False)
+        df = pd.read_csv(csv_path, sep=";", dtype=str, na_filter=False, skiprows=1)
         print(f"Loaded {len(df)} total records")
     except Exception as e:
         print(f"Error loading CSV: {e}")
@@ -139,16 +139,41 @@ def extract_phones(telephone_field):
     ]
 
 
-def extract_addresses(adresse_field):
+def extract_address_info(adresse_field):
+    """Extract first available address, postal code, and city"""
     addresses = parse_json_field(adresse_field)
-    return [
-        addr["valeur"]
-        for addr in addresses
-        if isinstance(addr, dict) and addr.get("valeur")
-    ]
+
+    # Return first valid address found
+    for addr in addresses:
+        if not isinstance(addr, dict):
+            continue
+
+        # Build formatted address string (street only)
+        address_parts = []
+
+        # Add street number and name
+        if addr.get("numero_voie"):
+            address_parts.append(addr["numero_voie"])
+
+        # Add complements if present
+        if addr.get("complement1"):
+            address_parts.append(addr["complement1"])
+        if addr.get("complement2"):
+            address_parts.append(addr["complement2"])
+
+        street_address = ", ".join(address_parts) if address_parts else ""
+        postal_code = addr.get("code_postal", "")
+        city = addr.get("nom_commune", "")
+
+        return street_address, postal_code, city
+
+    # Return empty values if no address found
+    return "", "", ""
 
 
 def create_contact_record(row):
+    address, postal_code, city = extract_address_info(row.get("adresse"))
+
     return {
         "nom": row.get("nom", ""),
         "service_type": row.get("extracted_service_type", ""),
@@ -159,7 +184,9 @@ def create_contact_record(row):
         "email": row.get("adresse_courriel", ""),
         "websites": extract_websites(row.get("site_internet")),
         "phones": extract_phones(row.get("telephone")),
-        "addresses": extract_addresses(row.get("adresse")),
+        "address": address,
+        "postal_code": postal_code,
+        "city": city,
     }
 
 
@@ -169,9 +196,10 @@ def extract_contact_info(df):
     for idx, row in df.iterrows():
         contact_record = create_contact_record(row)
 
+        # Convert lists to semicolon-separated strings (only for lists)
         contact_record["websites"] = ";".join(contact_record["websites"])
         contact_record["phones"] = ";".join(contact_record["phones"])
-        contact_record["addresses"] = ";".join(contact_record["addresses"])
+        # address, postal_code, city are already single strings
 
         contact_info.append(contact_record)
 
