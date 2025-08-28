@@ -1,0 +1,728 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Annuaire des Administrations - Schema",
+  "description": "Schema for the French public administration directory CSV file from service-public.fr",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "description": "Source URL of the dataset",
+      "value": "https://www.data.gouv.fr/datasets/service-public-fr-annuaire-de-l-administration-base-de-donnees-locales/"
+    },
+    "format": {
+      "type": "string",
+      "description": "File format",
+      "value": "CSV with semicolon (;) separator"
+    },
+    "encoding": {
+      "type": "string",
+      "description": "Character encoding",
+      "value": "UTF-8"
+    },
+    "columns": {
+      "type": "array",
+      "description": "Column definitions for the CSV file",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "nullable": { "type": "boolean" },
+          "json_schema": { "type": "object" }
+        }
+      },
+      "value": [
+        {
+          "position": 1,
+          "name": "plage_ouverture",
+          "type": "json_array",
+          "description": "Opening hours information as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nom_jour_debut": {
+                  "type": "string",
+                  "description": "Start day name"
+                },
+                "nom_jour_fin": {
+                  "type": "string",
+                  "description": "End day name"
+                },
+                "valeur": {
+                  "type": "string",
+                  "description": "Time range value"
+                },
+                "commentaire": {
+                  "type": "string",
+                  "description": "Additional comment"
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": 2,
+          "name": "site_internet",
+          "type": "json_array",
+          "description": "Website information as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "libelle": {
+                  "type": "string",
+                  "description": "Website label/title"
+                },
+                "valeur": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Website URL"
+                }
+              },
+              "required": ["valeur"]
+            }
+          }
+        },
+        {
+          "position": 3,
+          "name": "copyright",
+          "type": "string",
+          "description": "Copyright information",
+          "nullable": true
+        },
+        {
+          "position": 4,
+          "name": "siren",
+          "type": "string",
+          "description": "SIREN identifier (9-digit business identifier)",
+          "nullable": true,
+          "pattern": "^[0-9]{9}$"
+        },
+        {
+          "position": 5,
+          "name": "ancien_code_pivot",
+          "type": "string",
+          "description": "Former pivot code",
+          "nullable": true
+        },
+        {
+          "position": 6,
+          "name": "reseau_social",
+          "type": "json_array",
+          "description": "Social media information as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "valeur": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Social media URL"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description"
+                },
+                "custom_dico2": {
+                  "type": "string",
+                  "description": "Platform name (Facebook, Instagram, YouTube, LinkedIn, X ex Twitter, etc.)"
+                }
+              },
+              "required": ["valeur"]
+            }
+          }
+        },
+        {
+          "position": 7,
+          "name": "texte_reference",
+          "type": "json_array",
+          "description": "Reference texts (laws, decrees) as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "libelle": {
+                  "type": "string",
+                  "description": "Reference text title"
+                },
+                "valeur": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Reference text URL (typically Legifrance)"
+                }
+              },
+              "required": ["libelle", "valeur"]
+            }
+          }
+        },
+        {
+          "position": 8,
+          "name": "partenaire",
+          "type": "string",
+          "description": "Partner organization",
+          "nullable": true
+        },
+        {
+          "position": 9,
+          "name": "telecopie",
+          "type": "string",
+          "description": "Fax number",
+          "nullable": true
+        },
+        {
+          "position": 10,
+          "name": "nom",
+          "type": "string",
+          "description": "Name of the administration/service",
+          "nullable": false
+        },
+        {
+          "position": 11,
+          "name": "siret",
+          "type": "string",
+          "description": "SIRET identifier (14-digit establishment identifier)",
+          "nullable": true,
+          "pattern": "^[0-9]{14}$"
+        },
+        {
+          "position": 12,
+          "name": "itm_identifiant",
+          "type": "string",
+          "description": "ITM identifier",
+          "nullable": true
+        },
+        {
+          "position": 13,
+          "name": "sigle",
+          "type": "string",
+          "description": "Acronym or abbreviation",
+          "nullable": true
+        },
+        {
+          "position": 14,
+          "name": "affectation_personne",
+          "type": "json_array",
+          "description": "Person assignments (staff, directors, etc.) as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "personne": {
+                  "type": "object",
+                  "properties": {
+                    "nom": { "type": "string", "description": "Last name" },
+                    "prenom": { "type": "string", "description": "First name" },
+                    "civilite": {
+                      "type": "string",
+                      "description": "Title (M., Mme)"
+                    },
+                    "grade": {
+                      "type": "string",
+                      "description": "Professional grade/rank"
+                    },
+                    "texte_reference": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "libelle": { "type": "string" },
+                          "valeur": { "type": "string", "format": "uri" }
+                        }
+                      }
+                    },
+                    "adresse_courriel": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "libelle": { "type": "string" },
+                          "valeur": { "type": "string", "format": "email" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "fonction": {
+                  "type": "string",
+                  "description": "Job function/position"
+                },
+                "telephone": { "type": "string", "description": "Phone number" }
+              },
+              "required": ["fonction"]
+            }
+          }
+        },
+        {
+          "position": 15,
+          "name": "date_modification",
+          "type": "string",
+          "description": "Last modification date (DD/MM/YYYY HH:MM:SS format)",
+          "nullable": true,
+          "pattern": "^[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$"
+        },
+        {
+          "position": 16,
+          "name": "date_modification_datetime",
+          "type": "string",
+          "description": "Last modification date in ISO 8601 format",
+          "nullable": true,
+          "format": "date-time"
+        },
+        {
+          "position": 17,
+          "name": "adresse_courriel",
+          "type": "string",
+          "description": "Email address",
+          "nullable": true,
+          "format": "email"
+        },
+        {
+          "position": 18,
+          "name": "service_disponible",
+          "type": "string",
+          "description": "Available services",
+          "nullable": true
+        },
+        {
+          "position": 19,
+          "name": "organigramme",
+          "type": "json_array",
+          "description": "Organization chart information as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "libelle": {
+                  "type": "string",
+                  "description": "Organization chart title"
+                },
+                "valeur": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Organization chart URL"
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": 20,
+          "name": "pivot",
+          "type": "json_array",
+          "description": "Service local information or pivot identifier - can contain type_service_local for local services",
+          "nullable": true,
+          "json_schema": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Simple pivot identifier"
+              },
+              {
+                "type": "array",
+                "description": "Local service information",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type_service_local": {
+                      "type": "string",
+                      "description": "Type of local service",
+                      "examples": [
+                        "mairie",
+                        "epci",
+                        "commissariat_police",
+                        "gendarmerie",
+                        "police_municipale",
+                        "pif",
+                        "point_justice",
+                        "france_services",
+                        "permanence_juridique",
+                        "bibli",
+                        "caf",
+                        "cpam",
+                        "cij",
+                        "ars",
+                        "dmd",
+                        "tgi",
+                        "crous",
+                        "greta",
+                        "te",
+                        "sip",
+                        "clic",
+                        "cio",
+                        "maison_handicapees",
+                        "maison_metropole_lyon",
+                        "accompagnement_personnes_agees",
+                        "gendarmerie_moto",
+                        "vif_tj"
+                      ]
+                    },
+                    "code_insee_commune": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[0-9]{5}$",
+                        "description": "INSEE municipality codes served by this service"
+                      },
+                      "description": "List of INSEE codes for municipalities served"
+                    }
+                  },
+                  "required": ["type_service_local", "code_insee_commune"]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "position": 21,
+          "name": "partenaire_identifiant",
+          "type": "string",
+          "description": "Partner identifier",
+          "nullable": true
+        },
+        {
+          "position": 22,
+          "name": "ancien_identifiant",
+          "type": "string",
+          "description": "Former identifier",
+          "nullable": true
+        },
+        {
+          "position": 23,
+          "name": "id",
+          "type": "string",
+          "description": "Unique identifier (UUID format)",
+          "nullable": false,
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        {
+          "position": 24,
+          "name": "ancien_nom",
+          "type": "string",
+          "description": "Former name",
+          "nullable": true
+        },
+        {
+          "position": 25,
+          "name": "commentaire_plage_ouverture",
+          "type": "string",
+          "description": "Opening hours comment",
+          "nullable": true
+        },
+        {
+          "position": 26,
+          "name": "annuaire",
+          "type": "string",
+          "description": "Directory type",
+          "nullable": true
+        },
+        {
+          "position": 27,
+          "name": "tchat",
+          "type": "string",
+          "description": "Chat service information",
+          "nullable": true
+        },
+        {
+          "position": 28,
+          "name": "hierarchie",
+          "type": "json_array",
+          "description": "Hierarchical relationships as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type_hierarchie": {
+                  "type": "string",
+                  "description": "Type of hierarchical relationship",
+                  "enum": ["Service Fils", "Service Parent"]
+                },
+                "service": {
+                  "type": "string",
+                  "description": "Related service UUID",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                }
+              },
+              "required": ["type_hierarchie", "service"]
+            }
+          }
+        },
+        {
+          "position": 29,
+          "name": "categorie",
+          "type": "string",
+          "description": "Category classification",
+          "nullable": true
+        },
+        {
+          "position": 30,
+          "name": "sve",
+          "type": "string",
+          "description": "SVE identifier",
+          "nullable": true
+        },
+        {
+          "position": 31,
+          "name": "telephone_accessible",
+          "type": "string",
+          "description": "Accessible phone number",
+          "nullable": true
+        },
+        {
+          "position": 32,
+          "name": "application_mobile",
+          "type": "string",
+          "description": "Mobile application information",
+          "nullable": true
+        },
+        {
+          "position": 33,
+          "name": "version_type",
+          "type": "string",
+          "description": "Version type",
+          "nullable": true
+        },
+        {
+          "position": 34,
+          "name": "type_repertoire",
+          "type": "string",
+          "description": "Directory type classification",
+          "nullable": true,
+          "enum": ["SI", "Répertoire"]
+        },
+        {
+          "position": 35,
+          "name": "telephone",
+          "type": "json_array",
+          "description": "Phone numbers as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "valeur": { "type": "string", "description": "Phone number" },
+                "description": {
+                  "type": "string",
+                  "description": "Phone number description/type"
+                }
+              },
+              "required": ["valeur"]
+            }
+          }
+        },
+        {
+          "position": 36,
+          "name": "version_etat_modification",
+          "type": "string",
+          "description": "Modification status version",
+          "nullable": true
+        },
+        {
+          "position": 37,
+          "name": "date_creation",
+          "type": "string",
+          "description": "Creation date (DD/MM/YYYY HH:MM:SS format)",
+          "nullable": true,
+          "pattern": "^[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}$"
+        },
+        {
+          "position": 38,
+          "name": "date_creation_datetime",
+          "type": "string",
+          "description": "Creation date in ISO 8601 format",
+          "nullable": true,
+          "format": "date-time"
+        },
+        {
+          "position": 39,
+          "name": "partenaire_date_modification",
+          "type": "string",
+          "description": "Partner modification date",
+          "nullable": true
+        },
+        {
+          "position": 40,
+          "name": "mission",
+          "type": "string",
+          "description": "Mission/purpose description",
+          "nullable": true
+        },
+        {
+          "position": 41,
+          "name": "formulaire_contact",
+          "type": "string",
+          "description": "Contact form URL or information",
+          "nullable": true
+        },
+        {
+          "position": 42,
+          "name": "version_source",
+          "type": "string",
+          "description": "Source version",
+          "nullable": true
+        },
+        {
+          "position": 43,
+          "name": "type_organisme",
+          "type": "string",
+          "description": "Organization type",
+          "nullable": true,
+          "examples": [
+            "Administration centrale (ou Ministère)",
+            "Établissement public",
+            "Institution",
+            "Ambassade ou mission diplomatique",
+            "Autorité administrative indépendante"
+          ]
+        },
+        {
+          "position": 44,
+          "name": "code_insee_commune",
+          "type": "string",
+          "description": "INSEE municipality code",
+          "nullable": true,
+          "pattern": "^[0-9]{5}$"
+        },
+        {
+          "position": 45,
+          "name": "statut_de_diffusion",
+          "type": "string",
+          "description": "Publication status",
+          "nullable": true,
+          "enum": ["Publiable", "Non publiable"]
+        },
+        {
+          "position": 46,
+          "name": "adresse",
+          "type": "json_array",
+          "description": "Address information as JSON array",
+          "nullable": true,
+          "json_schema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type_adresse": {
+                  "type": "string",
+                  "description": "Address type",
+                  "enum": ["Adresse", "Adresse postale"]
+                },
+                "complement1": {
+                  "type": "string",
+                  "description": "Address complement 1"
+                },
+                "complement2": {
+                  "type": "string",
+                  "description": "Address complement 2"
+                },
+                "numero_voie": {
+                  "type": "string",
+                  "description": "Street number and name"
+                },
+                "service_distribution": {
+                  "type": "string",
+                  "description": "Mail distribution service (BP, CS, TSA)"
+                },
+                "code_postal": {
+                  "type": "string",
+                  "description": "Postal code"
+                },
+                "nom_commune": {
+                  "type": "string",
+                  "description": "Municipality name"
+                },
+                "pays": { "type": "string", "description": "Country" },
+                "continent": { "type": "string", "description": "Continent" },
+                "longitude": {
+                  "type": "string",
+                  "description": "Longitude coordinate"
+                },
+                "latitude": {
+                  "type": "string",
+                  "description": "Latitude coordinate"
+                }
+              },
+              "required": ["type_adresse"]
+            }
+          }
+        },
+        {
+          "position": 47,
+          "name": "url_service_public",
+          "type": "string",
+          "description": "Service-public.fr URL for this entity",
+          "nullable": true,
+          "format": "uri",
+          "pattern": "^https://lannuaire\\.service-public\\.fr/"
+        },
+        {
+          "position": 48,
+          "name": "information_complementaire",
+          "type": "string",
+          "description": "Additional information",
+          "nullable": true
+        },
+        {
+          "position": 49,
+          "name": "date_diffusion",
+          "type": "string",
+          "description": "Publication date",
+          "nullable": true
+        }
+      ]
+    }
+  },
+  "notes": {
+    "json_fields": [
+      "plage_ouverture",
+      "site_internet",
+      "reseau_social",
+      "texte_reference",
+      "affectation_personne",
+      "organigramme",
+      "pivot (for local services)",
+      "hierarchie",
+      "telephone",
+      "adresse"
+    ],
+    "key_identifiers": [
+      "id (UUID - primary key)",
+      "siren (9-digit business identifier)",
+      "siret (14-digit establishment identifier)",
+      "code_insee_commune (5-digit municipality code)"
+    ],
+    "date_formats": {
+      "french_format": "DD/MM/YYYY HH:MM:SS",
+      "iso_format": "YYYY-MM-DDTHH:MM:SS+TZ"
+    },
+    "encoding_notes": [
+      "JSON fields use double-escaped quotes (\"\")",
+      "Empty JSON arrays are represented as empty strings",
+      "Semicolon (;) is used as CSV delimiter",
+      "Some fields may contain semicolons within quoted JSON structures"
+    ],
+    "data_quality": [
+      "Many fields are nullable and may be empty",
+      "JSON structures may have empty or missing properties",
+      "Phone numbers and addresses may be in various formats",
+      "URLs should be validated as some may be malformed"
+    ]
+  }
+}
